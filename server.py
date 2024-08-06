@@ -3,8 +3,9 @@
 import asyncio
 import websockets
 import json
+import unittest
 from pathlib import Path
-from core.events import open_connection, close_connection, process
+from core.events import open_connection, close_connection, process_connection
 
 
 """
@@ -13,13 +14,14 @@ from core.events import open_connection, close_connection, process
        que message no se llama dentro de la función consumer
 """
 
+#request = html_request or await websocket.recv()
 async def front_controller(websocket, path):
 
     try:
         await open_connection(websocket, path)
         async for request in websocket: 
-            #request = html_request or await websocket.recv()
-            await process(websocket, request)
+            await process_connection(websocket, request)
+            print(f"html request {request}")
         await close_connection(websocket)
 
     except websockets.ConnectionClosedError as error: 
