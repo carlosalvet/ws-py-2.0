@@ -22,7 +22,7 @@ async def process_connection(websocket, message):
     print(f"[DEBUG]initializing request process, message: {message}")
 
     #user.__init_()
-    response = {"header":"value", 'body':message}
+    response = {"event":"chat-conversation", "header":"value", 'body':message}
     message_id = id(message)
     websocket_id = websocket
 
