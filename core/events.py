@@ -2,6 +2,7 @@ import json
 from core.router import Router
 from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
+from helpers.user import user_new
 
 users = set()
 async def register(websocket):
@@ -13,13 +14,19 @@ async def unregister(websocket):
 
 
 async def open_connection(websocket, path):
-    await register(websocket)
     websocket_id = id(websocket)
-    print(f"Abriendo Conexión {websocket_id}, path: {path}", "[OK]")
+    chat_id = path.split('/')[1]
+    print(f"[DEBUG]Open connection id {websocket_id}, path: {path}")
+
+    await register(websocket)
+    user = user_new(websocket_id, chat_id, 'citizen')
+    print(f"[DEBUG]New user: ", user)
+    return user
 
 
-async def process_connection(websocket, message):
-    print(f"[DEBUG]initializing request process, message: {message}")
+async def process_connection(websocket, message, user):
+    print("------------------------------------------------------------------")
+    print(f"[DEBUG]Initializing request process, message: {message}, user: {user}")
 
     #user.__init_()
     response = {"event":"chat-conversation", "header":"value", 'body':message}

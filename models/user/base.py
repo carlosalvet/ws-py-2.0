@@ -1,4 +1,3 @@
-from common.routes import get_join_path, get_session_path
 import time
 
 class WS_UserBase():
@@ -8,20 +7,17 @@ class WS_UserBase():
         self.name = ""
         self.role = ""
         self.chat_id = 0
-        self.session = ""
 
 
-    def set_arr(self, headers):
-        if headers['user-name']: self.name = headers['user-name']
-        if headers['user-role']: self.role = headers['user-role']
-        if headers['chat-id']: self.chat_id = headers['chat-id']
+    #def set_arr(self, headers):
+        #if headers['user-name']: self.name = headers['user-name']
+        #if headers['user-role']: self.role = headers['user-role']
+        #if headers['chat-id']: self.chat_id = headers['chat-id']
 
     def __str__(self):
-        string = f"id:{self.id}, name:{self.name}, chat_id:{self.chat_id}, session:null"
+        string = ""
+        if self.id: string += f"id:{self.id}"
+        if self.name: string += f", name:{self.name}"
+        if self.role: string += f", role: {self.role},"
+        if self.chat_id: string += f" chat_id:{self.chat_id}"
         return string
-
-    def rseed(self, word):
-        timestamp = time.time()
-        seed = f"{word}-{timestamp}"
-        print(f"[DEBUG] seed created: {seed}")
-        return seed
