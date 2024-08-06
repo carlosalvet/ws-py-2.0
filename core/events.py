@@ -1,5 +1,7 @@
 import json
 from core.router import Router
+from core.wsrequest import WsRequest
+from core.eventdispatcher import EventDispatcher 
 
 users = set()
 async def register(websocket):
@@ -16,16 +18,17 @@ async def open_connection(websocket, path):
     print(f"Abriendo Conexión {websocket_id}, path: {path}", "[OK]")
 
 
-async def process(websocket, message):
+async def process_connection(websocket, message):
+    print(f"[DEBUG]initializing request process, message: {message}")
+
     #user.__init_()
-    response = {"event":"chat-conversation", "body":""}
+    response = {"header":"value", 'body':message}
     message_id = id(message)
     websocket_id = websocket
 
-    #TODO agregar el modulo que hace el llamado al evento
-    #response["body"] = EventDispatcher.process(event, params)
+    headers, body = WsRequest.parse_request(message)
+    response["body"] = EventDispatcher.run(headers['event'], headers, message)
 
-    response["body"] = "hola mundo mundototote" 
     str_response = Router.stringify(response)
     await websocket.send(str_response)
     print(f"resquest response: {str_response}") 
