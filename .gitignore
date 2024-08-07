@@ -1,0 +1,11 @@
+# Ignorar carpetas __pycache__ en todo el proyecto
+test/
+__pycache__/
+core/__pycache__/
+
+
+# Otros archivos y carpetas que quieras ignorar
+*.pyc
+*.log
+.DS_Store
+venv/
