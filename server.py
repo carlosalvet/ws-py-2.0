@@ -5,7 +5,8 @@ import websockets
 import json
 import unittest
 from pathlib import Path
-from core.events import open_connection, close_connection, process_connection
+from core.events import call_event 
+from events.base import open_connection, close_connection
 
 
 """
@@ -18,10 +19,9 @@ from core.events import open_connection, close_connection, process_connection
 async def front_controller(websocket, path):
 
     try:
-        await open_connection(websocket, path)
+        response_conn_opened = await open_connection(websocket, path)
         async for request in websocket: 
-            await process_connection(websocket, request)
-            print(f"html request {request}")
+            await call_event(websocket, request, response_conn_opened)
         await close_connection(websocket)
 
     except websockets.ConnectionClosedError as error: 

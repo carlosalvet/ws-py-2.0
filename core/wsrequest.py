@@ -1,34 +1,39 @@
 import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+from config.app import SECTION_SEPARATOR, HEADER_SEPARTOR, ATTR_SEPARTOR 
+
 
 
 class WsRequest():
 
 
+    @staticmethod
     def split_sections(string):
-        headers, body = string.split("\n\n", 1) 
+        headers, body = string.split(SECTION_SEPARATOR, 1) 
         return headers, body
 
 
-    def parse_request(request):
+    @staticmethod
+    def split(request):
         str_header, body = WsRequest.split_sections(request)
         dict_headers = WsRequest.parse_headers(str_header)
+        print('[DEBUG]', 'Split request in headers and body', 'OK')
         return dict_headers, body
 
+    @staticmethod
     def parse_headers(str_headers):
         arr_headers = WsRequest.__split_headers(str_headers)
         dict = WsRequest.__arrheaders_to_dict(arr_headers)
         return dict
 
 
+    @staticmethod
     def parse_header(header):
-        index, value = header.split(":")
+        index, value = header.split(ATTR_SEPARTOR)
         return  index, value
 
 
     def __split_headers(str_headers):
-        headers = str_headers.split("\n")
+        headers = str_headers.split(HEADER_SEPARTOR)
         return headers
 
 

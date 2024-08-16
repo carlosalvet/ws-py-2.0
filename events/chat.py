@@ -8,11 +8,14 @@
 #from config.routes import SESSION_CHAT_DIR
 #from config.variables import CHATS, fd
 #from core.console.funcs import console_message
+import os
+from core.filesystem import FileSystem
+from core.funcs import chat_directory, chat_basename
+from helpers.user import user_new
 
+def chat_conversation(event, message="", opt_data=None):
+    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, opt data:{opt_data}')
 
-def chat_conversation(user, headers, message=""):
-    arr_conversation = ["PRUEBA", "PRUEBOTOTOTA"]
-    print(f"Ejecutando evento chat_conversation")
     #console_message('Enter to events.chat_conversation', 'DEBUG')
     #chat_path = chat_persist_filename(user.chat_id)
     #session.user = user
@@ -22,7 +25,14 @@ def chat_conversation(user, headers, message=""):
     #conversation = get_chat_contents(chat_path)
     #print(f"[OK]   Getting converesation: {conversation}")
     #arr_conversation = chat_log_parse(conversation)
-    return arr_conversation
+    user = opt_data['user']
+
+    date = '2022-06-30'
+    chat_id = user.chat_id
+
+    chat_filename = os.path.join(chat_directory(), date, chat_id, chat_basename())
+    conversation = FileSystem.file_get_contents(chat_filename);
+    return conversation
 
 def chat_message(session, message=""):
     approved_msg = ""
