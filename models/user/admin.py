@@ -1,4 +1,4 @@
-from adt.user.base import WS_UserBase 
+from models.user.base import WS_UserBase 
 
 class WS_Admin:
 

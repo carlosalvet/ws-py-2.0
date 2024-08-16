@@ -1,14 +1,10 @@
-class WS_Visual():
+from models.user.base import WS_UserBase 
 
-    def __init__(self, _id=0, _chat_id=0):
-        self.id = _id
+
+class WS_Visual(WS_UserBase):
+
+
+    def __init__(self, id=0, chat_id=0):
+        super().__init__(id)
         self.role = "visual"
-        self.chat_id = _chat_id
-
-    def to_string(self):
-        string = f"id:{self.id},chat id:{self.chat_id},role:{self.role}"
-        return string
-
-    def get_persist_content(self):
-        string = f"id:{self.id}\nrole:{self.role}\nchat id:{self.chat_id},"
-        return string
+        self.chat_id = chat_id
