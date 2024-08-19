@@ -1,5 +1,11 @@
 from config.app import CHAT_DIR, CHAT_BASENAME
 
+def str_to_array(string):
+    repr(string)
+    rows = string.split('\n')
+    array = [row.split('\t') for row in rows]
+    return array
+
 
 def compose(obj, cls):
     if isinstance(obj, cls) or obj is None:

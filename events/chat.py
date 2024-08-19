@@ -10,7 +10,7 @@
 #from core.console.funcs import console_message
 import os
 from core.filesystem import FileSystem
-from core.funcs import chat_directory, chat_basename
+from core.funcs import str_to_array, chat_directory, chat_basename
 from helpers.user import user_new
 
 def chat_conversation(event, message="", opt_data=None):
@@ -32,7 +32,8 @@ def chat_conversation(event, message="", opt_data=None):
 
     chat_filename = os.path.join(chat_directory(), date, chat_id, chat_basename())
     conversation = FileSystem.file_get_contents(chat_filename);
-    return conversation
+    arr_conversation = str_to_array(conversation)
+    return arr_conversation
 
 def chat_message(session, message=""):
     approved_msg = ""
