@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 class FileSystem:
 
@@ -29,7 +30,7 @@ class FileSystem:
                 raise PermissionError("No write permissions for the file.")
             
             with open(filepath, 'a') as file:
-                file.write(f'{nl}contents')
+                file.write(f'{nl}{contents}')
             return True
         except PermissionError as e:
             print(f"Permission denied: {str(e)}")

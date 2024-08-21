@@ -14,7 +14,9 @@ from core.funcs import str_to_array, chat_directory, chat_basename
 from helpers.user import user_new
 
 def chat_conversation(event, message="", opt_data=None):
-    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, opt data:{opt_data}')
+    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user: {opt_data}, user:{opt_data["user"]}')
+    user = opt_data['user']
+    chat = opt_data['chat']
 
     #console_message('Enter to events.chat_conversation', 'DEBUG')
     #chat_path = chat_persist_filename(user.chat_id)
@@ -25,12 +27,10 @@ def chat_conversation(event, message="", opt_data=None):
     #conversation = get_chat_contents(chat_path)
     #print(f"[OK]   Getting converesation: {conversation}")
     #arr_conversation = chat_log_parse(conversation)
-    user = opt_data['user']
 
     date = '2022-06-30'
-    chat_id = user.chat_id
 
-    chat_filename = os.path.join(chat_directory(), date, chat_id, chat_basename())
+    chat_filename = os.path.join(chat_directory(), date, str(chat.id), chat_basename())
     conversation = FileSystem.file_get_contents(chat_filename);
     arr_conversation = str_to_array(conversation)
     return arr_conversation

@@ -3,6 +3,8 @@ from core.router import Router
 from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
 from helpers.user import user_new
+from helpers.chat import chat_get
+from helpers.session import session_new
 
 users = set()
 async def register(websocket):
@@ -17,10 +19,13 @@ async def open_connection(websocket, path):
     print('[DEBUG]', 'Conexión Abierta', end=" ")
     websocket_id = id(websocket)
     chat_id = path.split('/')[1]
+    chat = chat_get(chat_id)
 
     await register(websocket)
-    user = user_new(websocket_id, chat_id, 'citizen')
-    response = {'user':user}
+    user = user_new(websocket_id, chat_id, 'visual')
+    session = session_new(user, chat)
+
+    response = {'user':user, 'chat': chat}
     print('[DEBUG]', 'Response open ws: ', response, 'OK')
     return response 
 

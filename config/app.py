@@ -8,3 +8,4 @@ ATTR_SEPARTOR = ":"
 
 CHAT_DIR = '../private/chat-edomex/chat'
 CHAT_BASENAME = 'conversation.log'
+CACHE_DIR = '../private/var'
