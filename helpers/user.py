@@ -18,9 +18,10 @@ def user_new_instance(_type='', username='', password=''):
     return user
 
 # para user_id se usa el fd (file descriptor)
-def user_new(user_id, chat_id, type=''):
+def user_new(websocket, chat, type=''):
+    
     user = user_new_instance(type)
-    user.id = user_id 
-    user.chat_id = chat_id
+    user.id = id(websocket) 
+    user.chat_id = chat.id 
     print('user: ', user) 
     return user

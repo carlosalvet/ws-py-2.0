@@ -4,7 +4,7 @@ from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
 from helpers.user import user_new
 from helpers.chat import chat_get
-from helpers.session import session_new, session_destroy
+from helpers.session import session_new, session_destroy, session_destroy
 
 users = set()
 async def register(websocket):
@@ -17,12 +17,11 @@ async def unregister(websocket):
 
 async def open_connection(websocket, path):
     print('[DEBUG]', 'Conexión Abierta', end=" ")
-    websocket_id = id(websocket)
     chat_id = path.split('/')[1]
     chat = chat_get(chat_id)
 
     await register(websocket)
-    user = user_new(websocket_id, chat_id, 'visual')
+    user = user_new(websocket, chat, 'visual')
     session = session_new(user, chat)
 
     response = {'user':user, 'chat': chat}
