@@ -4,7 +4,7 @@ from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
 from helpers.user import user_new
 from helpers.chat import chat_get
-from helpers.session import session_new
+from helpers.session import session_new, session_destroy
 
 users = set()
 async def register(websocket):
@@ -30,13 +30,18 @@ async def open_connection(websocket, path):
     return response 
 
 
-async def close_connection(websocket, error=None):
-    if not error:
-        print("Error: Conexión Cerrada", "[OK]")
+async def close_connection(websocket, opt_data={}, error=None):
+    print('[DEBUG]',f'Cerrando Conexión", opt_data: {opt_data}')
+    user = opt_data['user']
+    chat = opt_data['chat']
 
     await unregister(websocket)
+    session_destroy(user, chat)
 
     if error: error_manage(error)
+
+    if not error:
+        print("Error: Conexión Cerrada", "[OK]")
 
 
 def error_manage(error):

@@ -13,6 +13,13 @@ class Session:
         print('Inicializando sesión')
 
 
+    def __contents_format(self):
+        contents = f'role={self.user.role}\n'
+        contents += f'chat_title={self.chat.title}\n'
+        contents += f'chat_date={self.chat.date}'
+        return contents
+
+
     def persist(self):
         str_user_id = str(self.user.id)
         filename = os.path.join(CACHE_DIR, 'chat-edomex', str_user_id)
@@ -21,10 +28,12 @@ class Session:
 
         FileSystem.create_file(filename)
         FileSystem.file_put_contents(filename, contents)
-        
 
-    def __contents_format(self):
-        contents = f'role={self.user.role}\n'
-        contents += f'chat_title={self.chat.title}\n'
-        contents += f'chat_date={self.chat.date}'
-        return contents
+
+    def destroy(self):
+        # Armar nombre
+        str_user_id = str(self.user.id)
+        filename = os.path.join(CACHE_DIR, 'chat-edomex', str_user_id)
+
+        # Eliminar archivo persistente
+        response = FileSystem.destroy_file(filename)
