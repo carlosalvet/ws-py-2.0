@@ -17,3 +17,12 @@ def session_destroy(_user, _chat):
     session.chat = _chat
 
     session.destroy()
+
+def session_update(_user, _chat):
+    print('[DEBUG]', 'session update ...', _user, _chat, end=' ')
+    session = Session()
+    session.user = _user
+    session.chat = _chat
+    print('[OK]')
+
+    session.persist()

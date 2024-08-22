@@ -33,7 +33,8 @@ def chat_conversation(event, message="", opt_data=None):
     chat_filename = os.path.join(chat_directory(), date, str(chat.id), chat_basename())
     conversation = FileSystem.file_get_contents(chat_filename);
     arr_conversation = str_to_array(conversation)
-    return arr_conversation
+    response = {'conversation':arr_conversation, 'status': '200'}
+    return response 
 
 def chat_message(session, message=""):
     approved_msg = ""

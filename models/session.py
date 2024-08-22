@@ -15,6 +15,7 @@ class Session:
 
     def __contents_format(self):
         contents = f'role={self.user.role}\n'
+        contents += f'name={self.user.name}\n' if self.user.name else ''
         contents += f'chat_title={self.chat.title}\n'
         contents += f'chat_date={self.chat.date}'
         return contents

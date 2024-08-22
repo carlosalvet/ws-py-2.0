@@ -49,8 +49,16 @@ def error_manage(error):
 
     if code == 1005: print('Conexión Cerrada Correctamente', "[OK]" , code, reason) 
 
-def pre_optional_data(request, response_open_conn):
+
+def pre_optional_data(headers, response_open_conn):
+    print('[DEBUG]', f'AGREGANDO datos al request antes de despachar el event', f'{headers} - ', response_open_conn)
     opt_data = response_open_conn
+
+    if (headers['event'] == 'user-login'):
+        opt_data['role'] = headers['user-role'] or 'visual' 
+        opt_data['username'] = headers['user-name'] or '' 
+        print('hola mundo desde user-login')
+
     #TODO añadir opcionalmentedatos del request al evento
 
     return opt_data 

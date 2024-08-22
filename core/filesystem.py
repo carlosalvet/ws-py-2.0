@@ -48,7 +48,7 @@ class FileSystem:
 
 
     def create_file(filename):
-        if Path(filename).is_file(): destroy_file(filename)
+        if Path(filename).is_file(): FileSystem.destroy_file(filename)
 
         with open(filename, 'x') as fp:
             print(f"[DEBUG] File created: {filename}")

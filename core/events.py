@@ -5,14 +5,16 @@ from core.eventdispatcher import EventDispatcher
 from events.base import pre_optional_data
 
 
-async def call_event(websocket, request, response_open_conn=None):
-    print('[DEBUG] Evento Llamado', request, response_open_conn, 'OK' )
-    response = {"event":"chat-conversation", 'body':''}
+async def call_event(websocket, request, last_data=None):
+    print(f'[DEBUG] Core call event request: {request}, last_data: {last_data}')
+    response = {"event":""}
     websocket_id = websocket
 
-    headers, body = WsRequest.split(request)
-    opt_data = pre_optional_data(request, response_open_conn) 
-    response["body"] = EventDispatcher.run(headers["event"], body, opt_data)
+    dict_headers, body = WsRequest.split(request)
+    response['event'] = dict_headers['event']
+    opt_data = pre_optional_data(dict_headers, last_data) 
+    event_response = EventDispatcher.run(dict_headers["event"], body, opt_data)
+    response = event_response | response 
     str_response = Router.stringify(response)
     await websocket.send(str_response)
-    print('[DEBUG]', f'Response {headers["event"]}: ', str_response)
+    print('[DEBUG]', f'event: {dict_headers["event"]}, Response: ', str_response)

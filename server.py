@@ -19,13 +19,13 @@ from events.base import open_connection, close_connection
 async def front_controller(websocket, path):
 
     try:
-        response_conn_opened = await open_connection(websocket, path)
+        response_opened_conn = await open_connection(websocket, path)
         async for request in websocket: 
-            await call_event(websocket, request, response_conn_opened)
-        await close_connection(websocket, response_conn_opened)
+            await call_event(websocket, request, response_opened_conn)
+        await close_connection(websocket, response_opened_conn)
 
     except websockets.ConnectionClosedError as error: 
-        await close_connection(websocket, response_conn_opened, error)
+        await close_connection(websocket, response_opened_conn, error)
 
 # Open WebSocket server
 async def main():
