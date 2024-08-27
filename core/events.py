@@ -2,7 +2,7 @@ import json
 from core.router import Router
 from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
-from events.base import pre_optional_data
+from events.base import pre_event_data
 
 
 async def call_event(websocket, request, last_data=None):
@@ -12,8 +12,8 @@ async def call_event(websocket, request, last_data=None):
 
     dict_headers, body = WsRequest.split(request)
     response['event'] = dict_headers['event']
-    opt_data = pre_optional_data(dict_headers, last_data) 
-    event_response = EventDispatcher.run(dict_headers["event"], body, opt_data)
+    event_data = pre_event_data(dict_headers, last_data) 
+    event_response = EventDispatcher.run(dict_headers["event"], body, event_data)
     response = event_response | response 
     str_response = Router.stringify(response)
     await websocket.send(str_response)

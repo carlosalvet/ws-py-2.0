@@ -50,7 +50,7 @@ def error_manage(error):
     if code == 1005: print('Conexión Cerrada Correctamente', "[OK]" , code, reason) 
 
 
-def pre_optional_data(headers, response_open_conn):
+def pre_event_data(headers, response_open_conn):
     print('[DEBUG]', f'AGREGANDO datos al request antes de despachar el event', f'{headers} - ', response_open_conn)
     opt_data = response_open_conn
 
