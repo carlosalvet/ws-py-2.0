@@ -5,6 +5,7 @@ core/__pycache__/
 
 
 # Otros archivos y carpetas que quieras ignorar
+__pychache.*
 *.pyc
 *.log
 .DS_Store
