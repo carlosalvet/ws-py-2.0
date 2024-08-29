@@ -33,7 +33,7 @@ def chat_conversation(event, message="", _roc=None):
     chat_filename = get_chatname(chat)
     conversation = FileSystem.file_get_contents(chat_filename);
     arr_conversation = str_to_array(conversation)
-    response = {'conversation':arr_conversation, 'status': '200'}
+    response = {'conversation':arr_conversation, 'status':'200'}
     return response 
 
 def chat_message(session, message=""):
