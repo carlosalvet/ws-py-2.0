@@ -13,10 +13,11 @@ from core.filesystem import FileSystem
 from core.funcs import str_to_array, chat_directory, chat_basename
 from helpers.user import user_new
 
-def chat_conversation(event, message="", opt_data=None):
-    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user: {opt_data}, user:{opt_data["user"]}')
-    user = opt_data['user']
-    chat = opt_data['chat']
+#response_opened_conn = _roc
+def chat_conversation(event, message="", _roc=None):
+    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user:{_roc["user"]}')
+    user = _roc['user']
+    chat = _roc['chat']
 
     #console_message('Enter to events.chat_conversation', 'DEBUG')
     #chat_path = chat_persist_filename(user.chat_id)

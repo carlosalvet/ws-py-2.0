@@ -6,15 +6,19 @@ from events.base import pre_event_data
 
 
 async def call_event(websocket, request, last_data=None):
-    print(f'[DEBUG] Core call event request: {request}, last_data: {last_data}')
+    print(f'-----[DEBUG] Core call event request: {request}, last_data: {last_data}--')
     response = {"event":""}
     websocket_id = websocket
 
     dict_headers, body = WsRequest.split(request)
-    response['event'] = dict_headers['event']
-    event_data = pre_event_data(dict_headers, last_data) 
-    event_response = EventDispatcher.run(dict_headers["event"], body, event_data)
-    response = event_response | response 
-    str_response = Router.stringify(response)
-    await websocket.send(str_response)
-    print('[DEBUG]', f'event: {dict_headers["event"]}, Response: ', str_response)
+    event_code = dict_headers["event"] if 'event' in dict_headers else ''
+    if event_code:
+        event_data = pre_event_data(dict_headers, last_data) 
+        event_response = EventDispatcher.run(event_code, body, event_data)
+        response = event_response | response 
+        str_response = Router.stringify(response)
+        await websocket.send(str_response)
+        print('[DEBUG]', f'event: {dict_headers["event"]}, Response: ', str_response)
+    else: print('[ERROR]', f'El evento no existe o tiene un formato invalido: {dict_headers["event"]}')
+
+

@@ -8,10 +8,13 @@ class EventDispatcher():
     Execute an event with event code getted in request
     """
     @staticmethod
-    def run(event_name, headers, message="", user=None):
-        modulename, funcname = EventDispatcher._event_data(event_name)
-        func = EventDispatcher._func_by_reflection(modulename, funcname)
-        if func: response =  func(user, headers, message)
+    def run(event_code, body="", response_opened_conn=None):
+        print('[DEBUG]', f'Event dispatcher. run event_code:{event_code}, body:{body}')
+        modulename, eventname = EventDispatcher._event_sections(event_code)
+        print('modulename:', modulename, ', event name:', eventname)
+        eventfunc = EventDispatcher._format_eventfunc(modulename, eventname)
+        func = EventDispatcher._func_by_reflection(modulename, eventfunc)
+        if func: response =  func(event_code, body, response_opened_conn)
         return response
 
 
@@ -33,15 +36,24 @@ class EventDispatcher():
 
 
     @staticmethod
-    def _event_data(event_name):
+    def _event_sections(event_name):
         print('[DEBUG]', 'Obtendiendo datos del event_name', end=' ')
         module = ""
         funcname = ""
 
-        if isinstance(event_name, str): segments = event_name.split('-') 
-        if len(segments) == 2:
-            module = segments[0] 
-            funcname = event_name.replace('-', '_')
+        #sbstr = substrings
+        if isinstance(event_name, str): sbstr = event_name.split('-', 1)
+        if len(sbstr) == 2:
+            module = sbstr[0]
+            event = sbstr[1]
 
-        print('module: ', module, 'funcname: ', funcname, 'OK')
-        return module,funcname 
+        print(f'module: {module}, event: {event} OK')
+        return module, event 
+
+
+    @staticmethod
+    def _format_eventfunc(modulename, eventname):
+        funcname = ""
+        if modulename.isalnum() and eventname.isalnum():
+            funcname =  f"{modulename}_{eventname}"
+        return funcname

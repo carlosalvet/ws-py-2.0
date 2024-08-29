@@ -8,19 +8,28 @@ class WsRequest():
 
     @staticmethod
     def split_sections(string):
-        headers, body = string.split(SECTION_SEPARATOR, 1) 
+        sbstr = string.split(SECTION_SEPARATOR, 1) 
+        sbstr = string.split(SECTION_SEPARATOR, 1)
+        headers = sbstr[0]
+
+        if 1 in sbstr: body = sbstr[1] 
+        else: body =''
+
         return headers, body
 
 
+    """ 
+        Split and format the headers in an array
+    """
     @staticmethod
     def split(request):
         str_header, body = WsRequest.split_sections(request)
-        dict_headers = WsRequest.parse_headers(str_header)
+        dict_headers = WsRequest.format_headers(str_header)
         print('[DEBUG]', 'Split request in headers and body', 'OK')
         return dict_headers, body
 
     @staticmethod
-    def parse_headers(str_headers):
+    def format_headers(str_headers):
         arr_headers = WsRequest.__split_headers(str_headers)
         dict = WsRequest.__arrheaders_to_dict(arr_headers)
         return dict
