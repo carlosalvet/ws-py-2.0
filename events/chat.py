@@ -10,12 +10,12 @@
 #from core.console.funcs import console_message
 import os
 from core.filesystem import FileSystem
-from core.funcs import str_to_array, chat_directory, chat_basename
+from core.funcs import str_to_array, get_chatname
 from helpers.user import user_new
 
 #response_opened_conn = _roc
 def chat_conversation(event, message="", _roc=None):
-    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user:{_roc["user"]}')
+    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user:{_roc["user"]}, chat: {_roc["chat"]}')
     user = _roc['user']
     chat = _roc['chat']
 
@@ -29,9 +29,8 @@ def chat_conversation(event, message="", _roc=None):
     #print(f"[OK]   Getting converesation: {conversation}")
     #arr_conversation = chat_log_parse(conversation)
 
-    date = '2022-06-30'
 
-    chat_filename = os.path.join(chat_directory(), date, str(chat.id), chat_basename())
+    chat_filename = get_chatname(chat)
     conversation = FileSystem.file_get_contents(chat_filename);
     arr_conversation = str_to_array(conversation)
     response = {'conversation':arr_conversation, 'status': '200'}
@@ -52,3 +51,4 @@ def chat_message(session, message=""):
         logchat.add_register(formated_register)
 
     return approved_msg
+
