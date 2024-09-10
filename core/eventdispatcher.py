@@ -1,5 +1,5 @@
 from core.wsrequest import WsRequest
-from core.funcs import compose
+from core.funcs import compose, console_log
 
 class EventDispatcher():
 
@@ -11,7 +11,6 @@ class EventDispatcher():
     def run(event_code, body="", response_opened_conn=None):
         print('[DEBUG]', f'Event dispatcher. run event_code:{event_code}, body:{body}')
         modulename, eventname = EventDispatcher._event_sections(event_code)
-        print('modulename:', modulename, ', event name:', eventname)
         eventfunc = EventDispatcher._format_eventfunc(modulename, eventname)
         func = EventDispatcher._func_by_reflection(modulename, eventfunc)
         if func: response =  func(event_code, body, response_opened_conn)
@@ -25,19 +24,19 @@ class EventDispatcher():
      """
     @staticmethod
     def _func_by_reflection(packetname, funcname):
-        print('[DEBUG]', 'Obteniendo función por reflexión:', end=' ')
+        console_log('Obteniendo función por reflexión:', 1, ' ')
         modulename = packetname
         packetpath = f"events.{packetname}"
         namespace = __import__(packetpath)
         module = getattr(namespace, modulename)
         func = getattr(module, funcname)
-        print(func)
+        console_log(func)
         return func
 
 
     @staticmethod
     def _event_sections(event_name):
-        print('[DEBUG]', 'Obtendiendo datos del event_name', end=' ')
+        console_log('Extrayendo datos del codigo del evento;', 1, ' ')
         module = ""
         funcname = ""
 
@@ -47,7 +46,7 @@ class EventDispatcher():
             module = sbstr[0]
             event = sbstr[1]
 
-        print(f'module: {module}, event: {event} OK')
+        console_log(f'module: {module}, event: {event} OK', 1)
         return module, event 
 
 

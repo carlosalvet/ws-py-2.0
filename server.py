@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 from core.events import call_event 
 from events.base import open_connection, close_connection
+from security.funcs import filter_event_code
 
 
 """

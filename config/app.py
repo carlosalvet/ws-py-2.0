@@ -6,6 +6,8 @@ SECTION_SEPARATOR = "\n\n"
 HEADER_SEPARTOR = "\n"
 ATTR_SEPARTOR = ":"
 
+BASE_URL = "/home/carlos/proyectos-py/ws-chat2.0/app"
+
 CHAT_DIR = '../private/chat-edomex/chat'
 CHAT_BASENAME = 'conversation.log'
 CACHE_DIR = '../private/var'
