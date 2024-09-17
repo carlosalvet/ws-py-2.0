@@ -6,7 +6,7 @@ class FileSystem:
     def __init__(self):
         print('hola desde filesystem')
     
-    def file_get_contents(filename):
+    def get_contents(filename):
         print('[DEBUG]', 'Obteniendo contenido de archivo: ', filename, end=' ')
         contents = "";
 
@@ -22,7 +22,7 @@ class FileSystem:
         return contents
 
 
-    def file_put_contents(filepath, contents, new_line=False):
+    def put_contents(filepath, contents, new_line=False):
         nl = '\n' if new_line else ''
         print(f"[DEBUG] Inserting in : {filepath}, content: {contents}")
         try:

@@ -28,7 +28,7 @@ class Session:
         print('[DEBUG]', f'Persist file: {filename}, contents:{contents}')
 
         FileSystem.create_file(filename)
-        FileSystem.file_put_contents(filename, contents)
+        FileSystem.put_contents(filename, contents)
 
 
     def destroy(self):

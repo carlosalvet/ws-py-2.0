@@ -31,3 +31,11 @@ def user_upcasting(user, username, type='', password=''):
     del _tmp 
     print('[DEBUG]', 'User Upcasted', user)
     return user 
+
+def role_id(role_name):
+    _id = 0
+    if role_name == 'admin': _id = 1
+    elif role_name == 'expert': _id = 2
+    elif role_name == 'citizen': _id = 3 
+    return _id
+
