@@ -1,6 +1,8 @@
+import os
+import random
+import time
 from config.app import CHAT_DIR, CHAT_BASENAME
 from config.log import *
-import os
 
 
 def color_terminal_info():
@@ -57,3 +59,10 @@ def get_chatname(chat):
     basename = chat_basename()
     pathfile = os.path.join(directory, chat.date, str(chat.id), basename)
     return pathfile
+
+
+def rand_hash():
+    [_time, _milisegs] = str(time.time()).split('.')
+    head = random.randint(1, 1000)
+    hashnum = str(head)[:4] + str(_milisegs);
+    return hashnum
