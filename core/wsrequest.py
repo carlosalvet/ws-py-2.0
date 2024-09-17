@@ -2,7 +2,6 @@ import sys
 from config.app import SECTION_SEPARATOR, HEADER_SEPARTOR, ATTR_SEPARTOR 
 
 
-
 class WsRequest():
 
 
@@ -12,7 +11,7 @@ class WsRequest():
         sbstr = string.split(SECTION_SEPARATOR, 1)
         headers = sbstr[0]
 
-        if 1 in sbstr: body = sbstr[1] 
+        if len(sbstr) == 2: body = sbstr[1] 
         else: body =''
 
         return headers, body
@@ -25,7 +24,7 @@ class WsRequest():
     def split(request):
         str_header, body = WsRequest.split_sections(request)
         dict_headers = WsRequest.format_headers(str_header)
-        print('[DEBUG]', 'Split request in headers and body', 'OK')
+        print('[DEBUG]', f'Split request in headers:{dict_headers}, body:{body}')
         return dict_headers, body
 
     @staticmethod
