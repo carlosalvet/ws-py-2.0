@@ -16,6 +16,7 @@ async def unregister(websocket):
 
 
 async def open_connection(websocket, path):
+    print('---------------------------------')
     print('[DEBUG]', 'Conexión Abierta', end=" ")
     chat_id = path.split('/')[1]
     chat = chat_get(chat_id)

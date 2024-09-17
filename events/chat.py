@@ -15,40 +15,14 @@ from helpers.user import user_new
 
 #response_opened_conn = _roc
 def chat_conversation(event, message="", _roc=None):
+    print('\n-------------------')
     print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user:{_roc["user"]}, chat: {_roc["chat"]}')
     user = _roc['user']
     chat = _roc['chat']
 
-    #console_message('Enter to events.chat_conversation', 'DEBUG')
-    #chat_path = chat_persist_filename(user.chat_id)
-    #session.user = user
-    #session.chat = chat
-
-    #print(f"[OK]   Persist chat in: {chat_path}")
-    #conversation = get_chat_contents(chat_path)
-    #print(f"[OK]   Getting converesation: {conversation}")
-    #arr_conversation = chat_log_parse(conversation)
-
-
     chat_filename = get_chatname(chat)
-    conversation = FileSystem.file_get_contents(chat_filename);
+    conversation = FileSystem.get_contents(chat_filename);
     arr_conversation = str_to_array(conversation)
     response = {'event':'chat-conversation', 'conversation':arr_conversation, 'status':'200'}
     return response 
-
-def chat_message(session, message=""):
-    approved_msg = ""
-
-    formated_register = format_register(session, message)
-    print("formated message: ", formated_register)
-
-    #TODO check headers and session, is dan approve message or user message
-    has_approval = is_msg_approved(session)
-    if not has_approval:
-        add_queue_approve(formated_register)
-    else:
-        print(f"formed register: {formated_register}")
-        logchat.add_register(formated_register)
-
-    return approved_msg
 
