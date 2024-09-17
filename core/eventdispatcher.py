@@ -55,4 +55,5 @@ class EventDispatcher():
         funcname = ""
         if modulename.isalnum() and eventname.isalnum():
             funcname =  f"{modulename}_{eventname}"
+        console_log(f'nombre de la función: {funcname}', 1)
         return funcname
