@@ -18,4 +18,3 @@ HEADER_NAME_SEPARATOR = ":"
     
 CHAT_BASENAME = 'conversation.log'
 CHAT_DATA_FILENAME = 'metadata.ini'
-print("CHAT_DIR: ", CHAT_DIR)
