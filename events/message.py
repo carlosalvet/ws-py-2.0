@@ -1,6 +1,7 @@
 #from helpers.chat import format_register
 from core.filesystem import FileSystem
-from core.funcs import rand_hash, get_chatname
+from core.funcs import rand_hash
+from core.routes import get_chatname
 from helpers.user import role_id
 
 def str_message(string, user, chat):
