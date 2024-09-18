@@ -1,6 +1,6 @@
 #from helpers.chat import format_register
 from core.filesystem import FileSystem
-from core.funcs import rand_hash
+from core.funcs import rand_hash, get_chatname
 from helpers.user import role_id
 
 def str_message(string, user, chat):
@@ -18,11 +18,11 @@ def message_send(event, message="", _roc=None):
     print('--------------------------------')
     print("[PROCESS] events.message_send")
     print("[DEBUG]", f"event:{event}, message:{message}, _roc:{_roc}")
-    print("[DEBUG]", f"user:{_roc['user']}, chat:{_roc['chat']}")
+    print("[DEBUG]2222", f"user:{_roc['user']}, chat:{_roc['chat']}")
     is_moderated = False
     chat = _roc['chat']
     user = _roc['user']
-    response = {'event':'message-send', 'message': [], 'status':'200'}
+    response = {'user-name':user.name, 'user-role':user.role, 'event':'message-send', 'message': [], 'status':'200'}
 
     #is_authorize = session.user.authorize(session, str(headers['session-name']))
     if is_moderated: message_moderate(user, chat, message)
@@ -30,7 +30,7 @@ def message_send(event, message="", _roc=None):
         #register_file = format_register(user, chat, message)
     #if is_authorize:
         response['message'] = message
-        filename = '../private/chat-edomex/chat/2/conversation.log'
+        filename = get_chatname(chat)
         contents = str_message(message, user, chat)
         FileSystem.put_contents(filename, contents, True)
 

@@ -21,8 +21,8 @@ def user_login(event, message="", _roc=None):
     del _roc['user']
     _roc['user'] = user
 
-    print('[DEBUG]', 'called events.user_login', f'ouser: {_roc["user"]}, user: {user}')
-    response = {'event':'user-login', 'status':200}
+    print('[DEBUG]', 'called events.user_login', f'deleted user: {_roc["user"]}, user: {user}')
+    response = {'event':'user-login', 'user-name':user.role, 'user-role': user.name,'status':200}
     return response 
 
 

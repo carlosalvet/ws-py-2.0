@@ -10,8 +10,9 @@
 #from core.console.funcs import console_message
 import os
 from core.filesystem import FileSystem
-from core.funcs import str_to_array, get_chatname
+from core.routes import get_chatname
 from helpers.user import user_new
+from core.arrays import str_to_array
 
 #response_opened_conn = _roc
 def chat_conversation(event, message="", _roc=None):

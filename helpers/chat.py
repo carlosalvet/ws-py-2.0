@@ -1,4 +1,5 @@
 from models.chat import Chat
+from core.console import console_log
 
 def chat_new(chat_id):
     print('#TODO creando nuevo chat')
@@ -9,8 +10,6 @@ def chat_get(chat_id):
     chat.id = chat_id
     chat.get()
 
-    chat.id = 2
-    chat.title = 'TITULO DE PRUEBA'
-    chat.description = 'HARDCODED DESDE LE MÓDELO'
-    chat.date = '2022-06-30'
+    console_log(f'chat: {chat}', 1)
+
     return chat

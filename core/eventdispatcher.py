@@ -1,5 +1,6 @@
 from core.wsrequest import WsRequest
-from core.funcs import compose, console_log
+from core.funcs import compose
+from core.console import console_log
 
 class EventDispatcher():
 

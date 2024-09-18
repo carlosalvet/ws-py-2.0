@@ -1,3 +1,8 @@
+from core.console import console_log
+from core.routes import get_chatdata
+from core.arrays import arr_ini_contents
+import os
+
 class Chat:
 
     def __init__(self):
@@ -10,7 +15,10 @@ class Chat:
         print('creando chat')
 
     def get(self):
-        print(f'obteniendo chat desde {self.id}')
+        filename = get_chatdata(self)
+        array_ini = arr_ini_contents(filename)
+        console_log(f'ini contents: {array_ini}', 2)
+
 
     def __str__(self):
         string = f'id:{self.id}'
