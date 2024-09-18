@@ -1,5 +1,5 @@
 import sys
-from config.app import SECTION_SEPARATOR, HEADER_SEPARTOR, ATTR_SEPARTOR 
+from config.app import SECTION_SEPARATOR, HEADER_SEPARTOR, HEADER_NAME_SEPARATOR 
 
 
 class WsRequest():
@@ -36,7 +36,7 @@ class WsRequest():
 
     @staticmethod
     def parse_header(header):
-        index, value = header.split(ATTR_SEPARTOR)
+        index, value = header.split(HEADER_NAME_SEPARATOR)
         return  index, value
 
 
