@@ -13,11 +13,13 @@ from core.filesystem import FileSystem
 from core.routes import get_chatname
 from helpers.user import user_new
 from core.arrays import str_to_array
+from core.console import console_log
+
 
 #response_opened_conn = _roc
 def chat_conversation(event, message="", _roc=None):
     print('\n-------------------')
-    print('[DEBUG]',f'Ejecutando chat_conversation event:{event}, body:{message}, user:{_roc["user"]}, chat: {_roc["chat"]}')
+    console_log("events.chat_conversation", 3)
     user = _roc['user']
     chat = _roc['chat']
 

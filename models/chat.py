@@ -12,12 +12,11 @@ class Chat:
         self.date = ''
 
     def save(self):
-        print('creando chat')
+        print('creando chat #TODO')
 
     def get(self):
         filename = get_chatdata(self)
         array_ini = arr_ini_contents(filename)
-        console_log(f'ini contents: {array_ini}', 2)
 
 
     def __str__(self):

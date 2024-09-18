@@ -2,6 +2,7 @@ import json
 from core.router import Router
 from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
+from core.console import console_log
 from helpers.user import user_new
 from helpers.chat import chat_get
 from helpers.session import session_new, session_destroy, session_destroy
@@ -17,7 +18,7 @@ async def unregister(websocket):
 
 async def open_connection(websocket, path):
     print('---------------------------------')
-    print('[DEBUG]', 'Conexión Abierta', end=" ")
+    console_log('Conexión Abierta', 3)
     chat_id = path.split('/')[1]
     chat = chat_get(chat_id)
 
@@ -26,7 +27,7 @@ async def open_connection(websocket, path):
     session = session_new(user, chat)
 
     response = {'user':user, 'chat': chat}
-    print('[DEBUG]', 'Response open ws: ', response, 'OK')
+    #print('[DEBUG]', 'Response open ws: ', response, 'OK')
     return response 
 
 
@@ -52,7 +53,7 @@ def error_manage(error):
 
 
 def pre_event_data(headers, response_open_conn):
-    print('[DEBUG]', f'AGREGANDO datos al request antes de despachar el event', f'{headers} - ', response_open_conn)
+    console_log(f'AGREGANDO datos al request antes de despachar el event {headers} - ', 3)
     opt_data = response_open_conn
 
     if (headers['event'] == 'user-login'):

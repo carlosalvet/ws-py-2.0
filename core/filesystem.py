@@ -1,13 +1,14 @@
 import os
 from pathlib import Path
+from core.console import console_log
 
 class FileSystem:
 
     def __init__(self):
-        print('hola desde filesystem')
+        print('inicializando filesystem')
     
     def get_contents(filename):
-        print('[DEBUG]', 'Obteniendo contenido de archivo: ', filename, end=' ')
+        console_log(f'Obteniendo contenido de archivo: {filename}', 1, ' ')
         contents = "";
 
         if os.path.isfile(filename):
@@ -17,14 +18,14 @@ class FileSystem:
                 file.close()
             else: print(f'ERROR: El archivo no abre: {file}')
         else: print(f'Warning: El archivo no existe: {filename}')
-        print('OK')
+        console_log('OK', 1)
 
         return contents
 
 
     def put_contents(filepath, contents, new_line=False):
         nl = '\n' if new_line else ''
-        print(f"[DEBUG] Inserting in : {filepath}, content: {contents}")
+        console_log(f"Inserting in : {filepath}", 1)
         try:
             if not os.access(filepath, os.W_OK):
                 raise PermissionError("No write permissions for the file.")

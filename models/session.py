@@ -1,6 +1,7 @@
 import os 
 from config.app import CACHE_DIR 
 from core.filesystem import FileSystem 
+from core.console import console_log 
 
 
 class Session:
@@ -9,8 +10,7 @@ class Session:
     def __init__(self):
         self.user = None
         self.chat = None
-
-        print('Inicializando sesión')
+        console_log('Inicializando sesión', 3)
 
 
     def __contents_format(self):
@@ -25,7 +25,6 @@ class Session:
         str_user_id = str(self.user.id)
         filename = os.path.join(CACHE_DIR, 'chat-edomex', str_user_id)
         contents = self.__contents_format()
-        print('[DEBUG]', f'Persist file: {filename}, contents:{contents}')
 
         FileSystem.create_file(filename)
         FileSystem.put_contents(filename, contents)

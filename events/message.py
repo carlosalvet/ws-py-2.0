@@ -1,6 +1,7 @@
 #from helpers.chat import format_register
 from core.filesystem import FileSystem
 from core.funcs import rand_hash
+from core.console import console_log 
 from core.routes import get_chatname
 from helpers.user import role_id
 
@@ -17,9 +18,7 @@ def str_message(string, user, chat):
 
 def message_send(event, message="", _roc=None):
     print('--------------------------------')
-    print("[PROCESS] events.message_send")
-    print("[DEBUG]", f"event:{event}, message:{message}, _roc:{_roc}")
-    print("[DEBUG]2222", f"user:{_roc['user']}, chat:{_roc['chat']}")
+    console_log("events.message_send", 3)
     is_moderated = False
     chat = _roc['chat']
     user = _roc['user']

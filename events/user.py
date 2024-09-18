@@ -6,12 +6,13 @@
 #from adt.session import WS_Session
 from helpers.user import user_upcasting
 from helpers.session import session_update
+from core.console import console_log
 
 
 def user_login(event, message="", _roc=None):
     print('\n-------------------------')
-    print('[DEBUG]','Calling events.user_login')
-    print("[DEBUG]", f'data:{_roc}, User: {_roc["user"]}, message: {message}')
+    console_log('Calling events.user_login', 3)
+    #print("[DEBUG]", f'data:{_roc}, User: {_roc["user"]}, message: {message}')
     role = _roc['role']
     username = _roc['username']
 
@@ -21,7 +22,7 @@ def user_login(event, message="", _roc=None):
     del _roc['user']
     _roc['user'] = user
 
-    print('[DEBUG]', 'called events.user_login', f'deleted user: {_roc["user"]}, user: {user}')
+    #print('[DEBUG]', 'called events.user_login', f'deleted user: {_roc["user"]}, user: {user}')
     response = {'event':'user-login', 'user-name':user.role, 'user-role': user.name,'status':200}
     return response 
 

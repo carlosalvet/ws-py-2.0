@@ -10,7 +10,6 @@ class EventDispatcher():
     """
     @staticmethod
     def run(event_code, body="", response_opened_conn=None):
-        print('[DEBUG]', f'Event dispatcher. run event_code:{event_code}, body:{body}')
         modulename, eventname = EventDispatcher._event_sections(event_code)
         eventfunc = EventDispatcher._format_eventfunc(modulename, eventname)
         func = EventDispatcher._func_by_reflection(modulename, eventfunc)
@@ -25,7 +24,6 @@ class EventDispatcher():
      """
     @staticmethod
     def _func_by_reflection(packetname, funcname):
-        console_log('Obteniendo función por reflexión:', 1, ' ')
         modulename = packetname
         packetpath = f"events.{packetname}"
         namespace = __import__(packetpath)
@@ -37,7 +35,6 @@ class EventDispatcher():
 
     @staticmethod
     def _event_sections(event_name):
-        console_log('Extrayendo datos del codigo del evento;', 1, ' ')
         module = ""
         funcname = ""
 

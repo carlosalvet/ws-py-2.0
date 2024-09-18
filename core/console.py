@@ -20,7 +20,8 @@ def console_log(_str, code=0, _end=None):
         _type = '[DEBUG]'; c = FG_YELLOW
     if code == 2: #"INFO"
         _type = '[INFO]'; c = FG_BLUE
-        print('...')
+    if code == 3: #"INFO"
+        _type = '[PROCESS]'; c = FG_CYAN
 
     print(f'\033[{str(c)}{b}m{_type} {_str}\033[0m', end=_end)
     #else:

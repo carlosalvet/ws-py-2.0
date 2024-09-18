@@ -9,6 +9,8 @@ def compose(obj, cls):
         return obj
     else:
         raise TypeError('%s no es de tipo %s ', (type(obj), cls))
+
+
 def rand_hash():
     [_time, _milisegs] = str(time.time()).split('.')
     head = random.randint(1, 1000)
