@@ -1,5 +1,5 @@
 import os 
-from config.app import CACHE_DIR 
+from core.routes import get_tmp_filename 
 from core.filesystem import FileSystem 
 from core.console import console_log 
 
@@ -23,7 +23,7 @@ class Session:
 
     def persist(self):
         str_user_id = str(self.user.id)
-        filename = os.path.join(CACHE_DIR, 'chat-edomex', str_user_id)
+        filename = get_tmp_filename(str_user_id)
         contents = self.__contents_format()
 
         FileSystem.create_file(filename)
@@ -33,7 +33,7 @@ class Session:
     def destroy(self):
         # Armar nombre
         str_user_id = str(self.user.id)
-        filename = os.path.join(CACHE_DIR, 'chat-edomex', str_user_id)
+        filename = get_tmp_filename(str_user_id)
 
         # Eliminar archivo persistente
         response = FileSystem.destroy_file(filename)

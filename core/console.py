@@ -18,10 +18,12 @@ def console_log(_str, code=0, _end=None):
     _type = ''
     if code == 1: #"DEBUG"
         _type = '[DEBUG]'; c = FG_YELLOW
-    if code == 2: #"INFO"
+    elif code == 2: #"INFO"
         _type = '[INFO]'; c = FG_BLUE
-    if code == 3: #"INFO"
+    elif code == 3: #"PROCESS"
         _type = '[PROCESS]'; c = FG_CYAN
+    elif code == 4: #"ERROR"
+        _type = '[ERROR]'; c = FG_RED
 
     print(f'\033[{str(c)}{b}m{_type} {_str}\033[0m', end=_end)
     #else:

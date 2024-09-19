@@ -8,7 +8,8 @@ CHAT_ID_MAX_SIZE = 320000
 
 BASE_URL = "/home/carlos/proyectos-py/ws-chat2.0/app"
 CHAT_DIR = '../private/chat-edomex/chat'
-CACHE_DIR = '../private/var'
+USER_DIR = '../private/chat-edomex/credentials'
+TMP_DIR = '../private/var/tmp'
 
 
 # Constantes en Petición del cliente

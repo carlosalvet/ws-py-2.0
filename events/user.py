@@ -9,22 +9,33 @@ from helpers.session import session_update
 from core.console import console_log
 
 
+'''
+'''
 def user_login(event, message="", _roc=None):
     print('\n-------------------------')
-    console_log('Calling events.user_login', 3)
-    #print("[DEBUG]", f'data:{_roc}, User: {_roc["user"]}, message: {message}')
+    console_log(f'Calling events.user_login: {_roc}', 3)
+
     role = _roc['role']
     username = _roc['username']
+    if 'user_pass' in _roc: password = _roc['user-pass'] 
 
-    user = user_upcasting(_roc['user'], username, 'citizen')
-    session_update(user, _roc['chat'])
+    if role == 'citizen':
+        user = user_upcasting(_roc['user'], 'citizen')
+        session_update(user, _roc['chat'])
+        del _roc['user']; _roc['user'] = user
+    elif role == 'expert':
+        user = user_upcasting(_roc['user'], username, 'expert', )
+        session_update(user, _roc['chat'], role)
+        del _roc['user']; _roc['user'] = user
 
-    del _roc['user']
-    _roc['user'] = user
-
-    #print('[DEBUG]', 'called events.user_login', f'deleted user: {_roc["user"]}, user: {user}')
     response = {'event':'user-login', 'user-name':user.role, 'user-role': user.name,'status':200}
     return response 
+
+
+def user_expert():
+    print('\n-------------------------')
+    console_log('Calling events.user_expert', 3)
+    print('...')
 
 
 #def session_update(session, messsage=""):
