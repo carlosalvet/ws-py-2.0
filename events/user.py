@@ -7,6 +7,29 @@
 from helpers.user import user_upcasting
 from helpers.session import session_update
 from core.console import console_log
+from core.routes import get_tmp_filename, get_user_filename
+
+
+def __citizen_login(_roc):
+    user = user_upcasting(_roc['user'], 'citizen')
+    session = session_update(user, _roc['chat'])
+
+    str_user_id = str(_roc['user'].id)
+    filename = get_tmp_filename(str_user_id)
+    session.persist(filename)
+    return user 
+
+
+def __expert_login(_roc, username, password):
+    console_log(f'events.expert_login roc: {_roc}, username: {username}, password: {password}', 3)
+    user = user_upcasting(_roc['user'], 'expert', password)
+    user.username = username
+    user.user = 'TEST' 
+    console_log(f'events.user upcasting user: {_roc["user"]}, user: {user}', 2)
+
+    is_authenticaded = user.authenticate(password)
+    console_log(f'events.user expert is authenticaded: {is_authenticaded}', 2)
+    return user
 
 
 '''
@@ -14,21 +37,18 @@ from core.console import console_log
 def user_login(event, message="", _roc=None):
     print('\n-------------------------')
     console_log(f'Calling events.user_login: {_roc}', 3)
-
     role = _roc['role']
+    user = None 
     username = _roc['username']
-    if 'user_pass' in _roc: password = _roc['user-pass'] 
+    password = ''
+    if 'password' in _roc: password = _roc['password'] 
 
-    if role == 'citizen':
-        user = user_upcasting(_roc['user'], 'citizen')
-        session_update(user, _roc['chat'])
-        del _roc['user']; _roc['user'] = user
-    elif role == 'expert':
-        user = user_upcasting(_roc['user'], username, 'expert', )
-        session_update(user, _roc['chat'], role)
-        del _roc['user']; _roc['user'] = user
+    if role == 'citizen': user = __citizen_login(_roc)
+    elif role == 'expert': user = __expert_login(_roc, username, password)
+    del _roc['user']; _roc['user'] = user
 
-    response = {'event':'user-login', 'user-name':user.role, 'user-role': user.name,'status':200}
+    response = {'event':'user-login', 'user-name':user.name, 'user-role': user.role,'status':200}
+    console_log(f'events.user_login response: {response}', 1)
     return response 
 
 

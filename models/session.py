@@ -21,9 +21,10 @@ class Session:
         return contents
 
 
-    def persist(self):
-        str_user_id = str(self.user.id)
-        filename = get_tmp_filename(str_user_id)
+    def persist(self, filename = ''):
+        if not filename: 
+            str_user_id = str(self.user.id)
+            filename = get_tmp_filename(str_user_id)
         contents = self.__contents_format()
 
         FileSystem.create_file(filename)

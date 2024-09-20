@@ -4,9 +4,9 @@ from models.user.expert import WS_Expert
 from models.user.visual import WS_Visual 
 from core.console import console_log
 
-def user_new_instance(_type='', user=None):
+def user_new_instance(_type='', user=None, password=''):
     if(_type == 'expert'):
-        user = WS_Expert(user)
+        user = WS_Expert(user, password)
     elif(_type == 'admin'):
         user = WS_Admin()
     elif(_type == 'citizen'):
@@ -28,9 +28,10 @@ def user_new(websocket=None, chat=None, _type=''):
     return user
 
 def user_upcasting(user, type='', password=''):
+    console_log(f'helper.user user_upcasting user: {user}, type: {type}, password, {password}', 1)
     _tmp = user
     if type == 'citizen': user = user_new_instance('citizen', _tmp)
-    elif type == 'expert': user = user_new_instance('expert', _tmp,)
+    elif type == 'expert': user = user_new_instance('expert', _tmp, password)
     del _tmp 
     console_log(f'User Upcasted: {user}', 1)
     return user 

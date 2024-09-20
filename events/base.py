@@ -55,14 +55,15 @@ def error_manage(error):
 def pre_event_data(headers, response_open_conn):
     console_log(f'AGREGANDO datos al request antes de despachar el event {headers} - ', 3)
     opt_data = response_open_conn
+    opt_data['password'] = ''
 
     if (headers['event'] == 'user-login'):
-        opt_data['role'] = headers['user-role'] or 'visual' 
-        opt_data['username'] = headers['user-name'] or '' 
-        print('hola mundo desde user-login')
+        opt_data['role'] = headers['user-role']
+        opt_data['username'] = headers['user-name']
+        if opt_data['role'] == 'expert':
+            opt_data['password'] = headers['user-pass']
 
+    console_log(f'AGREGADOS datos al request antes de despachar el event {opt_data} - ', 3)
     #TODO añadir opcionalmentedatos del request al evento
 
     return opt_data 
-
-
