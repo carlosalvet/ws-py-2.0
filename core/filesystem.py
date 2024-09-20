@@ -89,3 +89,9 @@ class FileSystem:
                 f.seek(0)
             last_line = f.readline().decode()
         return last_line
+
+
+    def is_file(filename):
+        console_log(f'core.filesystem is_file: {filename}', 1)
+        if os.path.isfile(filename): return True
+        return False
