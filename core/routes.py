@@ -56,6 +56,7 @@ def get_tmp_filename(_filename=''):
 
 def get_user_filename(_basename=''):
     tmp_directory = __user_directory()
-    basename = _basename
-    filename = os.path.join(tmp_directory, 'chat-edomex', basename)
-    return filename 
+    basename = str(_basename)
+    filename = os.path.join(tmp_directory, basename)
+    abs_filename = os.path.abspath(filename)
+    return abs_filename 
