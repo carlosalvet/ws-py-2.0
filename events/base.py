@@ -5,7 +5,7 @@ from core.eventdispatcher import EventDispatcher
 from core.console import console_log
 from helpers.user import user_new
 from helpers.chat import chat_get
-from helpers.session import session_new, session_destroy, session_destroy
+from helpers.session import *
 
 users = set()
 async def register(websocket):
@@ -18,40 +18,45 @@ async def unregister(websocket):
 
 async def open_connection(websocket, path):
     print('---------------------------------')
-    console_log('Conexión Abierta', 3)
+    console_log(f'Conexión Abierta websocket: {id(websocket)}, path:{path}', 3)
+
+    websocket_id = id(websocket)
     chat_id = path.split('/')[1]
     chat = chat_get(chat_id)
 
     await register(websocket)
-    user = user_new(websocket, chat, 'visual')
-    session = session_new(user, chat)
+    user = user_new(websocket_id, 'visual')
+    user.chat_id = chat.id
 
-    response = {'user':user, 'chat': chat}
-    #print('[DEBUG]', 'Response open ws: ', response, 'OK')
+    session = session_new(websocket_id)
+    session.user = user
+    session.chat = chat
+
+    response = {'websocket_id': websocket_id, 'user':user, 'chat': chat}
     return response 
 
 
+'''
+'''
 async def close_connection(websocket, opt_data={}, error=None):
-    print('[DEBUG]',f'Cerrando Conexión", opt_data: {opt_data}')
-    user = opt_data['user']
-    chat = opt_data['chat']
-
-    await unregister(websocket)
-    session_destroy(user, chat)
+    print('[DEBUG]',f'Cerrando Conexión id:{id(websocket)}, opt_data: {opt_data}')
+    websocket_id = id(websocket)
+    session_destroy(websocket_id)
 
     if error: error_manage(error)
-
-    if not error:
-        print("Error: Conexión Cerrada", "[OK]")
+    else: print("Error: Conexión Cerrada", "[OK]")
 
 
+'''
+'''
 def error_manage(error):
     code = error.code or 0
     reason = error.reason or ""
-
     if code == 1005: print('Conexión Cerrada Correctamente', "[OK]" , code, reason) 
 
 
+'''
+'''
 def pre_event_data(headers, response_open_conn):
     console_log(f'AGREGANDO datos al request antes de despachar el event {headers} - ', 3)
     opt_data = response_open_conn

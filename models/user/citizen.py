@@ -6,7 +6,7 @@ from core.console import console_log
 
 class WS_Citizen(WS_UserBase):
 
-    def __init__(self, user = None):
+    def __init__(self, user = None, name=''):
         console_log(f'init USER citizen: {user}', 3)
         user_id = 0
         if user and  hasattr(user, 'id'): user_id = user.id
@@ -14,6 +14,6 @@ class WS_Citizen(WS_UserBase):
         super().__init__(user_id)
         if not user: return
         self.role = "citizen"
-        self.name = user.name
+        self.name = name
         self.chat_id = user.chat_id
 

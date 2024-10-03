@@ -1,5 +1,5 @@
 from core.console import console_log
-from core.routes import get_chatdata
+from core.routes import get_chatdata_filename
 from core.arrays import arr_ini_contents
 import os
 
@@ -15,8 +15,9 @@ class Chat:
         print('creando chat #TODO')
 
     def get(self):
-        filename = get_chatdata(self)
+        filename = get_chatdata_filename(self.id)
         array_ini = arr_ini_contents(filename)
+        console_log('models.chat array_ini: {array_ini}', 1)
 
 
     def __str__(self):

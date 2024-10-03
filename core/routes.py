@@ -41,18 +41,20 @@ def get_chatname(chat):
     return pathfile 
 
 
-def get_chatdata(chat):
+def get_chatdata_filename(chat_id):
     directory = __chat_directory()
     basename = __chat_data_filename()
-    pathfile = os.path.join(directory, str(chat.id), basename)
-    return pathfile 
+    filename = os.path.join(directory, str(chat_id), basename)
+    abs_filename = os.path.abspath(filename)
+    return abs_filename 
 
 
 def get_tmp_filename(_filename=''):
     tmp_directory = __tmp_directory()
     basename = _filename
     filename = os.path.join(tmp_directory, 'chat-edomex', basename)
-    return filename 
+    abs_filename = os.path.abspath(filename)
+    return abs_filename 
 
 def get_user_filename(_basename=''):
     tmp_directory = __user_directory()
