@@ -15,10 +15,11 @@ class WS_UserBase():
         #if headers['chat-id']: self.chat_id = headers['chat-id']
 
     def __str__(self):
-        string = '' 
+        string = '{' 
         separator = ''
         for key, value in self.__dict__.items():
             if isinstance(value, str): value = f"'{value}'"
             string += f"{separator}{key}: {value}"
             separator = ', '
+        string += '}'
         return string
