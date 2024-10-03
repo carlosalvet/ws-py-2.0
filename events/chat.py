@@ -12,16 +12,18 @@ import os
 from core.filesystem import FileSystem
 from core.routes import get_chatname
 from helpers.user import user_new
+from helpers.session import session_get 
 from core.arrays import str_to_array
 from core.console import console_log
 
 
 #response_opened_conn = _roc
-def chat_conversation(event, message="", _roc=None):
+def chat_conversation(websocket_id, message="", _roc=None):
     print('\n-------------------')
     console_log("events.chat_conversation", 3)
-    user = _roc['user']
-    chat = _roc['chat']
+    session = session_get(websocket_id)
+    chat = session.chat
+    console_log(f'helpers.session_get session.chat: {session.chat}', 1)
 
     chat_filename = get_chatname(chat)
     conversation = FileSystem.get_contents(chat_filename);

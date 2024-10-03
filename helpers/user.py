@@ -4,35 +4,29 @@ from models.user.expert import WS_Expert
 from models.user.visual import WS_Visual 
 from core.console import console_log
 
-def user_new_instance(_type='', user=None, password=''):
-    if(_type == 'expert'):
-        user = WS_Expert(user, password)
-    elif(_type == 'admin'):
+def user_new_instance(upcast_type='', user=None, namepass='', username=''):
+    console_log(f'helper.user user_new_instance type: {upcast_type}, {user}, namepass:{namepass}', 1)
+    if(upcast_type == 'expert'):
+        user = WS_Expert(user, username, namepass)
+    elif(upcast_type == 'admin'):
         user = WS_Admin()
-    elif(_type == 'citizen'):
-        print('[DEBUG]', 'Creando usuario (CITIZEN): ', user, end=" ")
-        user = WS_Citizen(user)
+    elif(upcast_type == 'citizen'):
+        user = WS_Citizen(user, namepass)
     else:
         user = WS_Visual()
 
     return user
 
 # para user_id se usa el fd (file descriptor)
-def user_new(websocket=None, chat=None, _type=''):
-    
-    if chat and hasattr(chat, 'id'):
-        chat_id = chat.id
+def user_new(websocket_id, _type=''):
     user = user_new_instance(_type)
-    user.id = id(websocket) 
-    user.chat_id = chat_id 
+    user.id = websocket_id
     return user
 
-def user_upcasting(user, type='', password=''):
-    console_log(f'helper.user user_upcasting user: {user}, type: {type}, password, {password}', 1)
-    _tmp = user
-    if type == 'citizen': user = user_new_instance('citizen', _tmp)
-    elif type == 'expert': user = user_new_instance('expert', _tmp, password)
-    del _tmp 
+def user_upcasting(_user, type='', namepass='', username=''):
+    console_log(f'helper.user user_upcasting user: {_user}, type: {type}, password, {namepass}', 1)
+    if type == 'citizen': user = user_new_instance('citizen', _user, namepass)
+    elif type == 'expert': user = user_new_instance('expert', _user, namepass, username)
     console_log(f'User Upcasted: {user}', 1)
     return user 
 

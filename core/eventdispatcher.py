@@ -10,10 +10,11 @@ class EventDispatcher():
     """
     @staticmethod
     def run(event_code, body="", response_opened_conn=None):
+        websocket_id = response_opened_conn['websocket_id']
         modulename, eventname = EventDispatcher._event_sections(event_code)
         eventfunc = EventDispatcher._format_eventfunc(modulename, eventname)
         func = EventDispatcher._func_by_reflection(modulename, eventfunc)
-        if func: response =  func(event_code, body, response_opened_conn)
+        if func: response =  func(websocket_id, body, response_opened_conn)
         return response
 
 
@@ -37,6 +38,7 @@ class EventDispatcher():
     def _event_sections(event_name):
         module = ""
         funcname = ""
+        substr = 0
 
         #sbstr = substrings
         if isinstance(event_name, str): sbstr = event_name.split('-', 1)

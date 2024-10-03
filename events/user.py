@@ -5,49 +5,55 @@
 #from helpers.events.session import user_trasform_to_citizen, user_transform_to_expert
 #from adt.session import WS_Session
 from helpers.user import user_upcasting
-from helpers.session import session_update
+from helpers.session import session_update, session_get
 from core.console import console_log
 from core.routes import get_tmp_filename, get_user_filename
 
 
-def __citizen_login(_roc):
-    user = user_upcasting(_roc['user'], 'citizen')
-    session = session_update(user, _roc['chat'])
+def __citizen_login(websocket_id, _user, name=''):
+    user = user_upcasting(_user, 'citizen', name)
+    console_log(f'events.user upcasting user: {_user}, user: {user}', 2)
 
-    str_user_id = str(_roc['user'].id)
-    filename = get_tmp_filename(str_user_id)
-    session.persist(filename)
+    session = session_get(websocket_id)
+    session.user = user
+    session.persist()
     return user 
 
 
-def __expert_login(_roc, username, password):
-    console_log(f'events.expert_login roc: {_roc}, username: {username}, password: {password}', 3)
-    user = user_upcasting(_roc['user'], 'expert', password)
-    user.username = username
-    user.user = 'TEST' 
-    console_log(f'events.user upcasting user: {_roc["user"]}, user: {user}', 2)
+def __expert_login(session, username, password):
+    console_log(f'events.expert_login user: {session.user}, username: {username}, password: {password}', 3)
+    user = user_upcasting(session.user, 'expert', password, username)
+    console_log(f'events.user upcasting user: {user}', 1)
+    is_authenticated = user.authenticate()
 
-    is_authenticaded = user.authenticate(password)
-    console_log(f'events.user expert is authenticaded: {is_authenticaded}', 2)
+    #TODO falta rechazar cuando no es autenticado
+    #if not is_authenticated: return None
+
+    console_log(f'events.user expert is authenticaded: {is_authenticated}', 2)
     return user
 
 
 '''
 '''
-def user_login(event, message="", _roc=None):
+def user_login(websocket_id, message="", data=None):
     print('\n-------------------------')
-    console_log(f'Calling events.user_login: {_roc}', 3)
-    role = _roc['role']
-    user = None 
-    username = _roc['username']
+    session = session_get(websocket_id)
+    console_log(f'Calling events.user_login session.user: {session.user}, data:{data}', 3)
+    username = data['username']
     password = ''
-    if 'password' in _roc: password = _roc['password'] 
+    user = None
+    
+    if 'password' in data: password = data['password'] 
 
-    if role == 'citizen': user = __citizen_login(_roc)
-    elif role == 'expert': user = __expert_login(_roc, username, password)
-    del _roc['user']; _roc['user'] = user
+    if data['role'] == 'citizen': user = __citizen_login(websocket_id, session.user, username)
+    elif data['role'] == 'expert': 
+        user = __expert_login(session, username, password)
+        del data['password'] 
+        del data['username']
 
-    response = {'event':'user-login', 'user-name':user.name, 'user-role': user.role,'status':200}
+    if user: response = {'event':'user-login', 'user-name':user.name, 'user-role': user.role,'status':200}
+    else: response = {'status', 500}
+
     console_log(f'events.user_login response: {response}', 1)
     return response 
 
