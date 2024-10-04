@@ -67,8 +67,10 @@ def pre_event_data(headers, response_open_conn):
         opt_data['username'] = headers['user-name']
         if opt_data['role'] == 'expert':
             opt_data['password'] = headers['user-pass']
+    elif (headers['event'] == 'message_send'):
+        print('...');
 
-    console_log(f'AGREGADOS datos al request antes de despachar el event {opt_data} - ', 3)
+    console_log(f'DATOS AGREGADOS al request antes de despachar el event {opt_data} - ', 3)
     #TODO añadir opcionalmentedatos del request al evento
 
     return opt_data 
