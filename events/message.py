@@ -4,6 +4,7 @@ from core.funcs import rand_hash
 from core.console import console_log 
 from core.routes import get_chatname
 from helpers.user import role_id
+from helpers.session import session_get 
 
 def str_message(string, user, chat):
     body = string
@@ -11,29 +12,28 @@ def str_message(string, user, chat):
     _role_id = role_id(user.role)
     date = chat.date
     message_id = rand_hash()
-    message = f'{message_id}	{date}	{_role_id}	False	{username}	{body}'
+    message = f'{message_id}	{date}	{_role_id}	{username}	{body}'
 
     return message
 
 
-def message_send(event, message="", _roc=None):
+def message_send(websocket_id, message="", data=None):
     print('--------------------------------')
-    console_log("events.message_send", 3)
+    console_log(f"events.message_send {websocket_id} message: {message}", 3)
+    console_log(f"data: data{data}", 3)
+    session = session_get(websocket_id)
+    console_log(f"session: {session}", 1)
     is_moderated = False
-    chat = _roc['chat']
-    user = _roc['user']
-    response = {'user-name':user.name, 'user-role':user.role, 'event':'message-send', 'message': [], 'status':'200'}
+    chat = session.chat
+    user = session.user
+    response = {'user-name':user.name, 'user-role':user.role, 'event':'message-send', 'message': "", 'status':'200'}
 
-    #is_authorize = session.user.authorize(session, str(headers['session-name']))
-    if is_moderated: message_moderate(user, chat, message)
-    else: 
-        #register_file = format_register(user, chat, message)
-    #if is_authorize:
-        response['message'] = message
-        filename = get_chatname(chat)
-        contents = str_message(message, user, chat)
-        FileSystem.put_contents(filename, contents, True)
+    console_log(f'message_send user:{user}, {type(user)}', 1)
+    filename = get_chatname(chat)
+    contents = str_message(message, user, chat)
+    FileSystem.put_contents(filename, contents, True)
 
+    response['message'] = message
     return response 
     #format_message(session, message)
     #add_log (fmessage)
