@@ -14,9 +14,11 @@ def session_get(session_id=0):
     return session
 
 
-def session_set(session_id, session):
+def session_set(session_id, prop, value):
     global _SESSION
-    _SESSION[session_id] = session
+    session = _SESSION[session_id]
+    setattr(session, prop, 'Carlos')
+    _SESSION[session_id] = session 
 
 
 def session_new(session_id=0):
