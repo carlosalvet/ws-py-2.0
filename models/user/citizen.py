@@ -17,3 +17,5 @@ class WS_Citizen(WS_UserBase):
         self.name = name
         self.chat_id = user.chat_id
 
+    def authorize(self):
+        return True
