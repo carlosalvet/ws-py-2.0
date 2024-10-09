@@ -24,6 +24,8 @@ def console_log(_str, code=0, _end=None):
         _type = '[PROCESS]'; c = FG_CYAN
     elif code == 4: #"ERROR"
         _type = '[ERROR]'; c = FG_RED
+    else:
+        _type = ''; c = ''
 
     print(f'\033[{str(c)}{b}m{_type} {_str}\033[0m', end=_end)
     #else:
