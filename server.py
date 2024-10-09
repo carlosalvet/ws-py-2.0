@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import settings
 import asyncio
 import websockets
 import json
