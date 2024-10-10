@@ -7,13 +7,12 @@ class WsRequest():
 
     @staticmethod
     def split_sections(string):
+        body =''
+
         sbstr = string.split(SECTION_SEPARATOR, 1) 
-        sbstr = string.split(SECTION_SEPARATOR, 1)
         headers = sbstr[0]
 
         if len(sbstr) == 2: body = sbstr[1] 
-        else: body =''
-
         return headers, body
 
 
@@ -22,9 +21,9 @@ class WsRequest():
     """
     @staticmethod
     def split(request):
+        if not request: return ('', '')
         str_header, body = WsRequest.split_sections(request)
         dict_headers = WsRequest.format_headers(str_header)
-        print('[DEBUG]', f'Split request in headers:{dict_headers}, body:{body}')
         return dict_headers, body
 
     @staticmethod
@@ -34,15 +33,9 @@ class WsRequest():
         return dict
 
 
-    @staticmethod
-    def parse_header(header):
-        index, value = header.split(HEADER_NAME_SEPARATOR)
-        return  index, value
-
-
     def __split_headers(str_headers):
-        headers = str_headers.split(HEADER_SEPARTOR)
-        return headers
+        arr_headers = str_headers.split(HEADER_SEPARTOR)
+        return arr_headers
 
 
     def __arrheaders_to_dict(arr_headers):
@@ -51,3 +44,16 @@ class WsRequest():
             index, value = WsRequest.parse_header(header)
             dict_headers[index] = value
         return dict_headers
+
+
+    @staticmethod
+    def parse_header(header):
+        parts = header.split(HEADER_NAME_SEPARATOR, 1)
+        if not len(parts) == 2: return ('', '')
+        return  parts[0], parts[1] 
+
+
+if __name__ == '__main__':
+    request = '\n\ncontentbody'
+    splited = WsRequest.split(request)
+    print(splited)
