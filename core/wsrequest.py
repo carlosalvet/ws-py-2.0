@@ -16,8 +16,14 @@ class WsRequest():
         return headers, body
 
 
-    """ 
-        Split and format the headers in an array
+    """
+        Se ingresa la cadena de texto del request que corresponde a las 
+        cabeceras, y esta la guarda en un diccionario donde cada registro
+        es el elemento separado por \n y la clave y valor son los que estón
+        separados por ':'
+        @str_headers 'Header1:value1\nHeader2:value2\n\n<nBody contents>'
+        @return true ({'Header1':'value1',·'Header2':'value2', ''})
+        @return false ({}, '') entonces false == (dict == false) | {} == false
     """
     @staticmethod
     def split(request):
@@ -32,14 +38,6 @@ class WsRequest():
         return dict_headers
 
 
-    """
-        Se ingresa la cadena de texto del request que corresponde a las 
-        cabeceras, y esta la guarda en un diccionario donde cada registro
-        es el elemento separado por \n y la clave y valor son los que estón
-        separados por ':'
-        @str_headers 'Header1:value1\nHeader2:value2'
-        @return arr {'Header1':'value1',·'Header2':'value2'}
-    """
     def __arrheaders_to_dict(arr_headers):
         dict_headers = dict()
         for header in arr_headers:

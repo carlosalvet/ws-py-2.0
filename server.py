@@ -21,9 +21,9 @@ from security.funcs import filter_event_code
 async def front_controller(websocket, path):
 
     try:
-        open_conn_data = await open_connection(websocket, path)
+        open_data = await open_connection(websocket, path)
         async for request in websocket: 
-            await call_event(websocket, request, open_conn_data)
+            await call_event(websocket, request, open_data)
         await close_connection(websocket, response_opened_conn)
 
     except websockets.ConnectionClosedError as error: 

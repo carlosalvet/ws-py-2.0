@@ -1,6 +1,7 @@
 from core.wsrequest import WsRequest
 from core.funcs import compose
 from core.console import console_log
+import types
 
 class EventDispatcher():
 
@@ -9,12 +10,23 @@ class EventDispatcher():
     Execute an event with event code getted in request
     """
     @staticmethod
-    def run(event_code, body="", response_opened_conn=None):
-        websocket_id = response_opened_conn['websocket_id']
-        modulename, eventname = EventDispatcher._event_sections(event_code)
-        eventfunc = EventDispatcher._format_eventfunc(modulename, eventname)
-        func = EventDispatcher._func_by_reflection(modulename, eventfunc)
-        if func: response =  func(websocket_id, body, response_opened_conn)
+    def call(event_code, body="", wsopen_data=None):
+        ws_id = wsopen_data['websocket_id']
+        print('wsopen_data:', wsopen_data)
+        modulename, eventname = EventDispatcher._split(event_code)
+        func_name = EventDispatcher._format_functionname(modulename, eventname)
+        func = EventDispatcher._get_func(modulename, func_name)
+        response = EventDispatcher._exec(func, ws_id, body, wsopen_data)
+        return response
+
+
+    def _exec(func, ws_id, body, wsopen_data):
+        if isinstance(func, types.FunctionType):
+            response =  func(ws_id, body, wsopen_data)
+        else:
+            response = {'event':'', 'message':'', 'status': 500}
+            response['message'] = f'La función no se puede ejecutar'
+
         return response
 
 
@@ -24,7 +36,7 @@ class EventDispatcher():
         3) Obtener la función  a partir del módulo 
      """
     @staticmethod
-    def _func_by_reflection(packetname, funcname):
+    def _get_func(packetname, funcname):
         modulename = packetname
         packetpath = f"events.{packetname}"
         namespace = __import__(packetpath)
@@ -35,7 +47,7 @@ class EventDispatcher():
 
 
     @staticmethod
-    def _event_sections(event_name):
+    def _split(event_name):
         module = ""
         funcname = ""
         substr = 0
@@ -51,7 +63,7 @@ class EventDispatcher():
 
 
     @staticmethod
-    def _format_eventfunc(modulename, eventname):
+    def _format_functionname(modulename, eventname):
         funcname = ""
         if modulename.isalnum() and eventname.isalnum():
             funcname =  f"{modulename}_{eventname}"
