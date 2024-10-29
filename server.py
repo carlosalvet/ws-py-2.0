@@ -24,10 +24,10 @@ async def front_controller(websocket, path):
         open_data = await open_connection(websocket, path)
         async for request in websocket: 
             await call_event(websocket, request, open_data)
-        await close_connection(websocket, response_opened_conn)
+        await close_connection(websocket, open_data)
 
     except websockets.ConnectionClosedError as error: 
-        await close_connection(websocket, response_opened_conn, error)
+        await close_connection(websocket, open_data, error)
 
 # Open WebSocket server
 async def main():

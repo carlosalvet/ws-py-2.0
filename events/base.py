@@ -39,12 +39,12 @@ async def open_connection(websocket, path):
 '''
 '''
 async def close_connection(websocket, opt_data={}, error=None):
-    print('[DEBUG]',f'Cerrando Conexión id:{id(websocket)}, opt_data: {opt_data}')
+    console_log(f'Cerrando Conexión id:{id(websocket)}, error: {error}', 1)
     websocket_id = id(websocket)
     session_destroy(websocket_id)
 
     if error: error_manage(error)
-    else: print("Error: Conexión Cerrada", "[OK]")
+    else: console_log("Conexión Cerrada Inesperadamente", 4)
 
 
 '''
@@ -52,7 +52,10 @@ async def close_connection(websocket, opt_data={}, error=None):
 def error_manage(error):
     code = error.code or 0
     reason = error.reason or ""
-    if code == 1005: print('Conexión Cerrada Correctamente', "[OK]" , code, reason) 
+    if code == 1005: 
+        console_log('Conexión Cerrada Correctamente', 3) 
+    else: 
+        console_log('Conexión Cerrada Correctamente desconocida, code: {code}') 
 
 
 '''
