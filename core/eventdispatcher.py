@@ -1,5 +1,5 @@
 from core.wsrequest import WsRequest
-from core.funcs import compose
+from core.funcs import compose, get_var_value
 from core.console import console_log
 import types
 
@@ -11,12 +11,13 @@ class EventDispatcher():
     """
     @staticmethod
     def call(event_code, body="", wsopen_data=None):
-        ws_id = wsopen_data['websocket_id']
-        print('wsopen_data:', wsopen_data)
+        response = ''
+        ws_id = get_var_value(wsopen_data, 0, 'websocket_id')
         modulename, eventname = EventDispatcher._split(event_code)
-        func_name = EventDispatcher._format_functionname(modulename, eventname)
-        func = EventDispatcher._get_func(modulename, func_name)
-        response = EventDispatcher._exec(func, ws_id, body, wsopen_data)
+        if modulename and eventname:
+            func_name = EventDispatcher._format_functionname(modulename, eventname)
+            func = EventDispatcher._get_func(modulename, func_name)
+            response = EventDispatcher._exec(func, ws_id, body, wsopen_data)
         return response
 
 
@@ -51,6 +52,8 @@ class EventDispatcher():
         module = ""
         funcname = ""
         substr = 0
+        module = ''
+        event = ''
 
         #sbstr = substrings
         if isinstance(event_name, str): sbstr = event_name.split('-', 1)
