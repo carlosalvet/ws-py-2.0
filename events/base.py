@@ -60,17 +60,17 @@ def error_manage(error):
 
 '''
 '''
-def pre_event_data(headers, response_open_conn):
+def pre_event_data(event_code, headers, response_open_conn):
     console_log(f'AGREGANDO datos al request antes de despachar el event {headers} - ', 3)
     opt_data = response_open_conn
     opt_data['password'] = ''
 
-    if (headers['event'] == 'user-login'):
+    if (event_code == 'user-login'):
         opt_data['role'] = headers['user-role']
         opt_data['username'] = headers['user-name']
         if opt_data['role'] == 'expert':
             opt_data['password'] = headers['user-pass']
-    elif (headers['event'] == 'message_send'):
+    elif (event_code == 'message_send'):
         print('...');
 
     console_log(f'DATOS AGREGADOS al request antes de despachar el event {opt_data} - ', 3)
