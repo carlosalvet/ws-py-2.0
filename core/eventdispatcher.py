@@ -1,5 +1,5 @@
 from core.wsrequest import WsRequest
-from core.funcs import compose, get_var_value
+from core.funcs import compose, get_extra_datum 
 from core.console import console_log
 import types
 
@@ -8,11 +8,12 @@ class EventDispatcher():
 
     """
     Execute an event with event code getted in request
+    <ws://<address>:<port>/<extra-datum>
     """
     @staticmethod
     def call(event_code, body="", wsopen_data=None):
         response = ''
-        ws_id = get_var_value(wsopen_data, 0, 'websocket_id')
+        ws_id = get_extra_datum(wsopen_data, 0, 'websocket_id')
         modulename, eventname = EventDispatcher._split(event_code)
         if modulename and eventname:
             func_name = EventDispatcher._format_functionname(modulename, eventname)

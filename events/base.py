@@ -4,7 +4,7 @@ from core.wsrequest import WsRequest
 from core.eventdispatcher import EventDispatcher 
 from core.console import console_log
 from helpers.user import user_new
-from helpers.chat import chat_get
+from helpers.chat import _chat_get
 from helpers.session import *
 
 users = set()
@@ -16,23 +16,16 @@ async def unregister(websocket):
     users.remove(websocket)
 
 
-async def open_connection(websocket, path):
+async def open_connection(websocket):
     print('---------------------------------')
-    console_log(f'Conexión Abierta websocket: {id(websocket)}, path:{path}', 3)
+    console_log(f'Conexión Abierta websocket: {id(websocket)}', 3)
+    await register(websocket)
 
     websocket_id = id(websocket)
-    chat_id = path.split('/')[1]
-    chat = chat_get(chat_id)
-
-    await register(websocket)
-    user = user_new(websocket_id, 'visual')
-    user.chat_id = chat.id
-
     session = session_new(websocket_id)
-    session.user = user
-    session.chat = chat
+    session.user = user_new(websocket_id, 'visual')
 
-    response = {'websocket_id': websocket_id, 'user':user, 'chat': chat}
+    response = {'websocket_id': websocket_id}
     return response 
 
 
@@ -61,19 +54,21 @@ def error_manage(error):
 '''
 '''
 def pre_event_data(event_code, headers, response_open_conn):
-    console_log(f'AGREGANDO datos al request antes de despachar el event {headers} - ', 3)
+    console_log(f'AGREGANDO headers al request antes de despachar el event {headers}, {response_open_conn}', 3)
     opt_data = response_open_conn
-    opt_data['password'] = ''
 
     if (event_code == 'user-login'):
         opt_data['role'] = headers['user-role']
         opt_data['username'] = headers['user-name']
         if opt_data['role'] == 'expert':
             opt_data['password'] = headers['user-pass']
-    elif (event_code == 'message_send'):
+    elif (event_code == 'chat-get'):
+        opt_data['chat-id'] = headers['chat-id']
+
+    else:
         print('...');
 
-    console_log(f'DATOS AGREGADOS al request antes de despachar el event {opt_data} - ', 3)
+    console_log(f'HEADERS AGREGADOS al request antes de despachar el event {opt_data} - ', 3)
     #TODO añadir opcionalmentedatos del request al evento
 
     return opt_data 

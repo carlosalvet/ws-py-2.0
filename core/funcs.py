@@ -19,7 +19,7 @@ def rand_hash():
     return hashnum
 
 
-def get_var_value(value, default=None, key=''):
+def get_extra_datum(value, default=None, key=''):
     datum = ''
     first_data =''
     if isinstance(value, Iterable):

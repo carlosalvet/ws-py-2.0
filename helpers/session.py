@@ -17,8 +17,17 @@ def session_get(session_id=0):
 def session_set(session_id, prop, value):
     global _SESSION
     session = _SESSION[session_id]
-    setattr(session, prop, 'Carlos')
+    setattr(session, prop, value)
     _SESSION[session_id] = session 
+
+
+def session_chat_set(session_id, chat):
+    session = session_get(session_id)
+    if session:
+        session.chat = chat
+
+    if session.user:
+        session.user.chat_id = chat.id
 
 
 def session_new(session_id=0):
