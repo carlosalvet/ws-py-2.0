@@ -22,13 +22,13 @@ from core.console import console_log
 async def front_controller(websocket):
     if websocket:
         try:
-            open_data = await open_connection(websocket)
+            response_open_conn = await open_connection(websocket)
             async for request in websocket: 
-                await call_event(websocket, request, open_data)
-            await close_connection(websocket, open_data)
+                await call_event(websocket, request, response_open_conn)
+            await close_connection(websocket, response_open_conn)
 
         except websockets.ConnectionClosedError as error: 
-            await close_connection(websocket, open_data, error)
+            await close_connection(websocket, response_open_conn, error)
 
 # Open WebSocket server
 async def main():
