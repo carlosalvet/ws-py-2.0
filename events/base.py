@@ -53,7 +53,7 @@ def error_manage(error):
 
 '''
 '''
-def pre_event_data(event_code, headers, response_open_conn):
+def filter_response_open_conn(event_code, headers, response_open_conn):
     console_log(f'AGREGANDO headers al request antes de despachar el event {headers}, {response_open_conn}', 3)
     opt_data = response_open_conn
 
