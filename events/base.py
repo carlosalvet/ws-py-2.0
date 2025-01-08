@@ -5,25 +5,27 @@ from core.eventdispatcher import EventDispatcher
 from core.console import console_log
 from helpers.user import user_new
 from helpers.chat import _chat_get
-from helpers.session import *
+from helpers.session import session_create, session_destroy
 
 users = set()
-sessions = set()
 async def register(websocket):
     users.add(websocket)
 
-async def unregister(websocket, session):
+async def unregister(websocket):
     users.remove(websocket)
 
 
 async def open_connection(websocket):
     print('---------------------------------')
     console_log(f'Conexión Abierta websocket: {id(websocket)}', 3)
+    await register(websocket)
 
     websocket_id = id(websocket)
-    user = user_new(websocket_id, 'visual')
-    session = session_new(websocket_id, user)
-    await register(websocket)
+    if websocket_id: 
+        user = user_new(websocket_id, 'visual')
+        session = session_create(websocket_id, user)
+    else: 
+        ''
 
     response = {'websocket_id': websocket_id}
     return response 
@@ -31,24 +33,10 @@ async def open_connection(websocket):
 
 '''
 '''
-async def close_connection(websocket, opt_data={}, error=None):
-    console_log(f'Cerrando Conexión id:{id(websocket)}, error: {error}', 1)
+async def close_connection(websocket, opt_data={}):
+    console_log(f'Cerrando Conexión id:{id(websocket)}', 1)
     websocket_id = id(websocket)
     session_destroy(websocket_id)
-
-    if error: error_manage(error)
-    else: console_log("Conexión Cerrada Inesperadamente", 4)
-
-
-'''
-'''
-def error_manage(error):
-    code = error.code or 0
-    reason = error.reason or ""
-    if code == 1005: 
-        console_log('Conexión Cerrada Correctamente', 3) 
-    else: 
-        console_log('Conexión Cerrada Correctamente desconocida, code: {code}') 
 
 
 '''

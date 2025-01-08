@@ -61,7 +61,7 @@ class Session:
 
     @user.setter
     def user(self, _user):
-        if isinstance(_user, WS_UserBase):
+        if _user is None or isinstance(_user, WS_UserBase):
             self._user = _user 
         else:
             raise TypeError("La dirección debe ser un objeto del tipo Usuario.")
@@ -75,7 +75,7 @@ class Session:
 
     @chat.setter
     def chat(self, _chat):
-        if isinstance(_chat, Chat):
+        if _chat is None or isinstance(_chat, Chat):
             self._chat = _chat 
         else:
             raise TypeError("La dirección debe ser un objeto del tipo Chat.")

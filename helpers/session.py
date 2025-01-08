@@ -32,23 +32,27 @@ def session_set_chat(session_id, chat):
     session.persist()
 
 
-
-def session_new(session_id=0, user=None):
-    global _SESSION
+'''
+    session_new = CREATE session (en diagrama)
+'''
+def session_create(session_id=0, user=None, chat=None):
 
     session = Session()
     session.id = session_id 
     session.user = user
-    _SESSION[session_id] = session
-
+    session.chat = chat 
     session.persist()
+
+    global _SESSION
+    _SESSION[session_id] = session
     console_log(f'Create Sessión: {session}', 1)
     return session
 
 
 def session_destroy(session_id):
     global _SESSION
-    session = _SESSION[session_id]
+
+    if session_id in _SESSION: _SESSION.pop(session_id)
     session.destroy()
 
 def session_update(session_id, _user, _chat=None):
@@ -60,3 +64,11 @@ def session_update(session_id, _user, _chat=None):
     print('[OK]')
     return session
 
+
+def session_print_error(code=0):
+    if code==0:
+        console_log('', 1)
+    elif code==1:
+        console_log('helper session_new, session_id no existe', 4)
+    else:
+        console_log('Error desconocido', 1)
