@@ -8,22 +8,22 @@ from helpers.chat import _chat_get
 from helpers.session import *
 
 users = set()
+sessions = set()
 async def register(websocket):
     users.add(websocket)
 
-
-async def unregister(websocket):
+async def unregister(websocket, session):
     users.remove(websocket)
 
 
 async def open_connection(websocket):
     print('---------------------------------')
     console_log(f'Conexión Abierta websocket: {id(websocket)}', 3)
-    await register(websocket)
 
     websocket_id = id(websocket)
-    session = session_new(websocket_id)
-    session.user = user_new(websocket_id, 'visual')
+    user = user_new(websocket_id, 'visual')
+    session = session_new(websocket_id, user)
+    await register(websocket)
 
     response = {'websocket_id': websocket_id}
     return response 

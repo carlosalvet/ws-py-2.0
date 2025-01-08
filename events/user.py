@@ -38,24 +38,27 @@ def __expert_login(websocket_id, username, password):
 
 '''
 '''
-def user_login(websocket_id, message="", data=None):
+def user_login(websocket_id, message="", headers=None):
     print('\n-------------------------')
     session = session_get(websocket_id)
-    console_log(f'Calling events.user_login session.user: {session.user}, data:{data}', 3)
-    username = data['username']
+    console_log(f'Calling events.user_login session.user: {session.user}, headers:{headers}', 3)
+    username = headers['username']
     password = ''
     user = None
+    response = {'event':'user-login', 'status': '500'}
     
-    if 'password' in data: password = data['password'] 
+    if 'password' in headers: password = headers['password'] 
 
-    if data['role'] == 'citizen': user = __citizen_login(websocket_id, session.user, username)
-    elif data['role'] == 'expert': 
+    if headers['role'] == 'citizen': user = __citizen_login(websocket_id, session.user, username)
+    elif headers['role'] == 'expert': 
         user = __expert_login(websocket_id, username, password)
-        del data['password'] 
-        del data['username']
+        del headers['password'] 
+        del headers['username']
 
-    if user.name: response = {'event':'user-login', 'user-name':user.name, 'user-role': user.role,'status':200}
-    else: response = {'event':'user-login', 'status': 500}
+    if user.name: {
+        response.status ='200'
+        response['user-name'] = user.name
+        response['user-role'] =  user.role
 
     console_log(f'events.user_login response: {response}', 1)
     return response 

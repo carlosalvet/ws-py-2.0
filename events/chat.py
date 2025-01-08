@@ -11,7 +11,7 @@
 import os
 from helpers.user import user_new
 from helpers.chat import _chat_get, chat_conversation
-from helpers.session import session_get, session_chat_set
+from helpers.session import session_get, session_set_chat
 from core.console import console_log
 
 
@@ -26,7 +26,7 @@ def chat_get(websocket_id, message="", _roc=None):
     if _roc and 'chat-id' in _roc:  chat = _chat_get(_roc['chat-id'])
     if chat: arr_conversation = chat_conversation(websocket_id, chat)
     if arr_conversation: status = '200'
-    session_chat_set(websocket_id, chat)
+    session_set_chat(websocket_id, chat=chat)
 
     response = {'event':'chat-get', 'conversation':arr_conversation, 'status':status}
     console_log(f'response: {response}',1)

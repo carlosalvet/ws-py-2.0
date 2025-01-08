@@ -9,10 +9,10 @@ from models.chat import Chat
 class Session:
 
 
-    def __init__(self):
+    def __init__(self, user = None, chat = None):
         self.id = 0
-        self._user = None
-        self._chat = None
+        self._user = user 
+        self._chat = chat
         console_log('Inicializando sesión', 3)
 
 

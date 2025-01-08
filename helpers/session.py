@@ -16,25 +16,29 @@ def session_get(session_id=0):
 
 def session_set(session_id, prop, value):
     global _SESSION
-    session = _SESSION[session_id]
-    setattr(session, prop, value)
-    _SESSION[session_id] = session 
+    session = _SESSION[session_id] if session_id in _SESSION else None
+    if session and hasattr(session, 'prop'):
+        setattr(session, prop, value)
+        _SESSION[session_id] = session #Esta línea está de mas, por el apuntador
+    else:
+        return False 
 
 
-def session_chat_set(session_id, chat):
+def session_set_chat(session_id, chat):
     session = session_get(session_id)
-    if session:
-        session.chat = chat
+    if not session: return False
+    session.chat = chat
+    session.user.chat_id = chat.id
+    session.persist()
 
-    if session.user:
-        session.user.chat_id = chat.id
 
 
-def session_new(session_id=0):
+def session_new(session_id=0, user=None):
     global _SESSION
 
     session = Session()
     session.id = session_id 
+    session.user = user
     _SESSION[session_id] = session
 
     session.persist()
