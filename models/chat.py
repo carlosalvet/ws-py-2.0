@@ -17,9 +17,9 @@ class Chat:
     def get(self):
         filename = get_chatdata_filename(self.id)
         arr_ini = arr_ini_contents(filename)
-        console_log(f'models.chat array_ini: {arr_ini}', 1)
+        #console_log(f'models.chat array_ini: {arr_ini}', 1)
         self.__formatting_object(arr_ini)
-        console_log(f'models.chat get self: {self}', 1)
+        #console_log(f'models.chat get self: {self}', 1)
         return True
         
     def __formatting_object(self, arr_ini):
