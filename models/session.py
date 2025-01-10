@@ -57,28 +57,20 @@ class Session:
     @property
     def user(self):
         return self._user
-
-
     @user.setter
     def user(self, _user):
-        if _user is None or isinstance(_user, WS_UserBase):
+        if isinstance(_user, WS_UserBase):
             self._user = _user 
-        else:
-            raise TypeError("La dirección debe ser un objeto del tipo Usuario.")
 
 
     # Propiedad para acceder al chat
     @property
     def chat(self):
         return self._chat
-
-
     @chat.setter
     def chat(self, _chat):
-        if _chat is None or isinstance(_chat, Chat):
+        if isinstance(_chat, Chat):
             self._chat = _chat 
-        else:
-            raise TypeError("La dirección debe ser un objeto del tipo Chat.")
 
 
     def __str__(self):
