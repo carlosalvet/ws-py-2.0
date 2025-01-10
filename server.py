@@ -32,6 +32,7 @@ def _print_error(code=0, reason=''):
 """
 
 #request = html_request or await websocket.recv()
+# id(websocket) arroja un entero 'int'
 async def front_controller(websocket):
     response_open_conn = ""
     if websocket:
@@ -49,6 +50,7 @@ async def front_controller(websocket):
             await close_connection(websocket, response_open_conn)
     else:
       _print_error(99999)
+
 
 # Open WebSocket server
 async def main():

@@ -5,7 +5,7 @@ from core.filesystem import FileSystem
 from core.arrays import str_to_array
 
 
-def chat_new(chat_id):
+def chat_create(chat_id):
     print('#TODO creando nuevo chat')
 
 
@@ -13,9 +13,7 @@ def _chat_get(chat_id):
     chat = Chat()
     chat.id = chat_id
     chat.get()
-
-    console_log(f'chat: {chat}', 1)
-
+    #console_log(f'chat: {chat}', 1)
     return chat
 
 
